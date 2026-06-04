@@ -81,7 +81,9 @@ export class DashboardComponent implements OnInit {
     const appointment = {
       customerName: this.customerName,
       phoneNumber: this.phoneNumber,
-      appointmentTime: this.appointmentTime
+      appointmentTime: new Date(
+        this.appointmentTime
+      ).toISOString()
     };
 
     this.appointmentService
@@ -137,7 +139,6 @@ export class DashboardComponent implements OnInit {
       .toLocaleString(
         'en-IN',
         {
-          timeZone: 'Asia/Kolkata',
           day: '2-digit',
           month: '2-digit',
           year: 'numeric',
