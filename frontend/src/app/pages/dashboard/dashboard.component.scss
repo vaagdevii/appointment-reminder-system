@@ -1,0 +1,22 @@
+.form-card,
+.table-card {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+.form-control {
+  border-radius: 10px;
+  height: 48px;
+}
+
+.btn-primary {
+  height: 48px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.table-card table {
+  margin-bottom: 0;
+}

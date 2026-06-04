@@ -1,0 +1,184 @@
+<div class="page-container">
+
+  <div class="header-section mb-4">
+    <h1 class="fw-bold">
+      Appointment Reminder System
+    </h1>
+
+    <p class="text-muted">
+      Manage appointments and WhatsApp reminders
+    </p>
+  </div>
+
+  <div class="row g-4 mb-4">
+
+    <div class="col-md-4">
+      <div class="stat-card">
+        <i class="bi bi-calendar-check"></i>
+        <h5>Total Appointments</h5>
+        <h2>{{ totalAppointments }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card">
+        <i class="bi bi-calendar-day"></i>
+        <h5>Today's Appointments</h5>
+        <h2>{{ todaysAppointments }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card">
+        <i class="bi bi-bell"></i>
+        <h5>Upcoming</h5>
+        <h2>{{ upcomingAppointments }}</h2>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row g-4">
+
+    <div class="col-lg-4">
+
+      <div class="form-card">
+
+        <h4 class="mb-4">
+          Schedule Appointment
+        </h4>
+
+        <form>
+
+          <div class="mb-3">
+            <label class="form-label">
+              Customer Name
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter customer name"
+              [(ngModel)]="customerName"
+              name="customerName"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">
+              Phone Number
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="+91XXXXXXXXXX"
+              [(ngModel)]="phoneNumber"
+              name="phoneNumber"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">
+              Appointment Time
+            </label>
+
+            <input
+              type="datetime-local"
+              class="form-control"
+              [(ngModel)]="appointmentTime"
+              name="appointmentTime"
+            />
+          </div>
+
+          <button
+            class="btn btn-primary w-100"
+            type="button"
+            (click)="scheduleAppointment()"
+          >
+            Schedule Appointment
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <div class="col-lg-8">
+
+      <div class="table-card">
+
+        <h4 class="mb-3">
+          Recent Appointments
+        </h4>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle">
+
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Appointment Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let appointment of appointments">
+
+                <td>
+                  {{ appointment.customerName }}
+                </td>
+
+                <td>
+                  {{ appointment.phoneNumber }}
+                </td>
+
+                <td>
+                  {{ appointment.appointmentTime | date:'medium' }}
+                </td>
+
+                <td>
+                  <span class="badge bg-success">
+                    Confirmed
+                  </span>
+                </td>
+                <td>
+
+  <button
+    class="btn btn-danger btn-sm"
+    (click)="deleteAppointment(
+      appointment._id
+    )"
+  >
+    Delete
+  </button>
+
+</td>
+
+              </tr>
+
+              <tr *ngIf="appointments.length === 0">
+                <td colspan="4" class="text-center py-4">
+                  No Appointments Found
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
