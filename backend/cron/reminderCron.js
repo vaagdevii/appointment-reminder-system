@@ -4,7 +4,7 @@ const { sendWhatsAppMessage } = require('../services/twilioService');
 
 console.log('Reminder Cron Loaded');
 
-const task = cron.schedule('* * * * *', async () => {
+cron.schedule('* * * * *', async () => {
 
   console.log('Checking reminders...');
 
@@ -16,20 +16,27 @@ const task = cron.schedule('* * * * *', async () => {
       reminderSent: false
     });
 
-    console.log(`Found ${appointments.length} pending appointments`);
+    console.log(
+      `Found ${appointments.length} pending appointments`
+    );
 
     for (const appointment of appointments) {
 
-      const appointmentTime = new Date(appointment.appointmentTime);
+      const appointmentTime =
+        new Date(appointment.appointmentTime);
 
       const diffMinutes =
-        (appointmentTime.getTime() - now.getTime()) / (1000 * 60);
+        (appointmentTime.getTime() - now.getTime()) /
+        (1000 * 60);
 
       console.log(
         `${appointment.customerName} => ${diffMinutes.toFixed(2)} minutes`
       );
 
-      if (diffMinutes > 0 && diffMinutes <= 60) {
+      if (
+        diffMinutes > 0 &&
+        diffMinutes <= 60
+      ) {
 
         await sendWhatsAppMessage(
           appointment.phoneNumber,
@@ -37,24 +44,26 @@ const task = cron.schedule('* * * * *', async () => {
         );
 
         appointment.reminderSent = true;
+
         await appointment.save();
 
         console.log(
           `Reminder sent to ${appointment.phoneNumber}`
         );
+
       }
 
     }
 
   } catch (error) {
 
-    console.error('Cron Error:', error);
+    console.error(
+      'Cron Error:',
+      error
+    );
 
   }
 
 }, {
-  scheduled: true,
   timezone: 'Asia/Kolkata'
 });
-
-console.log('Cron Status:', task.getStatus());
