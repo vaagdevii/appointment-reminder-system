@@ -28,9 +28,27 @@ cron.schedule('* * * * *', async () => {
 
       try {
 
+        const formattedDateTime =
+          appointmentTime.toLocaleString(
+            'en-IN',
+            {
+              timeZone: 'Asia/Kolkata',
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true
+            }
+          );
+
         await sendWhatsAppMessage(
           appointment.phoneNumber,
-          `Reminder: Your appointment is scheduled at ${appointmentTime.toLocaleString()}`
+          `Reminder:
+
+Your appointment is scheduled for ${formattedDateTime}.
+
+Please be available on time.`
         );
 
         appointment.reminderSent = true;
