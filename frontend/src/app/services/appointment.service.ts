@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class AppointmentService {
 
   private apiUrl =
-    'http://localhost:5000/api/appointments';
+'https://appointment-reminder-backend.onrender.com/api/appointments';
 
   constructor(
     private http: HttpClient
