@@ -140,31 +140,31 @@
                 </td>
 
                 <td>
-  {{ appointment.appointmentTime | date:'dd/MM/yyyy hh:mm a' }}
-</td>
+                  {{
+                    appointment.appointmentTime
+                    | date:'dd/MM/yyyy hh:mm a':'UTC'
+                  }}
+                </td>
 
                 <td>
                   <span class="badge bg-success">
                     Confirmed
                   </span>
                 </td>
+
                 <td>
-
-  <button
-    class="btn btn-danger btn-sm"
-    (click)="deleteAppointment(
-      appointment._id
-    )"
-  >
-    Delete
-  </button>
-
-</td>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="deleteAppointment(appointment._id)"
+                  >
+                    Delete
+                  </button>
+                </td>
 
               </tr>
 
               <tr *ngIf="appointments.length === 0">
-                <td colspan="4" class="text-center py-4">
+                <td colspan="5" class="text-center py-4">
                   No Appointments Found
                 </td>
               </tr>
