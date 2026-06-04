@@ -4,71 +4,88 @@ const { sendWhatsAppMessage } = require('../services/twilioService');
 
 cron.schedule('* * * * *', async () => {
 
-  console.log('Checking reminders...');
+  try {
 
-  const now = new Date();
+    console.log('Checking reminders...');
 
-  const appointments =
-    await Appointment.find({
+    const now = new Date();
+
+    const appointments = await Appointment.find({
       reminderSent: false
     });
 
-  for (const appointment of appointments) {
+    console.log(
+      `Found ${appointments.length} pending appointments`
+    );
 
-    const appointmentTime =
-      new Date(appointment.appointmentTime);
-
-    const diffMinutes =
-      (appointmentTime - now) / (1000 * 60);
-
-    if (
-      diffMinutes > 0 &&
-      diffMinutes <= 60
-    ) {
+    for (const appointment of appointments) {
 
       try {
 
-        const formattedDateTime =
-          appointmentTime.toLocaleString(
-            'en-IN',
-            {
-              timeZone: 'Asia/Kolkata',
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true
-            }
-          );
+        const appointmentTime =
+          new Date(appointment.appointmentTime);
 
-        await sendWhatsAppMessage(
-          appointment.phoneNumber,
-          `Reminder:
+        const diffMinutes =
+          (appointmentTime - now) / (1000 * 60);
+
+        console.log(
+          `${appointment.customerName} => ${diffMinutes.toFixed(2)} minutes`
+        );
+
+        if (
+          diffMinutes > 0 &&
+          diffMinutes <= 60
+        ) {
+
+          const formattedDateTime =
+            appointmentTime.toLocaleString(
+              'en-IN',
+              {
+                timeZone: 'Asia/Kolkata',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+              }
+            );
+
+          await sendWhatsAppMessage(
+            appointment.phoneNumber,
+            `Reminder:
 
 Your appointment is scheduled for ${formattedDateTime}.
 
 Please be available on time.`
-        );
+          );
 
-        appointment.reminderSent = true;
+          appointment.reminderSent = true;
+          await appointment.save();
 
-        await appointment.save();
+          console.log(
+            `Reminder sent to ${appointment.phoneNumber}`
+          );
 
-        console.log(
-          `Reminder sent to ${appointment.phoneNumber}`
-        );
+        }
 
-      } catch (error) {
+      } catch (err) {
 
         console.error(
-          'Reminder failed:',
-          error.message
+          'Appointment processing error:',
+          err
         );
 
       }
 
     }
+
+  } catch (err) {
+
+    console.error(
+      'Cron job error:',
+      err
+    );
 
   }
 
