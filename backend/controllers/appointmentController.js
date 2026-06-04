@@ -20,9 +20,27 @@ const createAppointment = async (req, res) => {
 
     try {
 
+      const formattedDateTime =
+        new Date(appointmentTime).toLocaleString(
+          'en-IN',
+          {
+            timeZone: 'Asia/Kolkata',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          }
+        );
+
       await sendWhatsAppMessage(
         phoneNumber,
-        `Hello ${customerName}, your appointment is confirmed for ${new Date(appointmentTime).toLocaleString()}`
+        `Hello ${customerName},
+
+Your appointment is confirmed for ${formattedDateTime}.
+
+Thank you.`
       );
 
     } catch (error) {
