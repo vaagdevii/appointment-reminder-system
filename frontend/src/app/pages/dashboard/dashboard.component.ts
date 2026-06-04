@@ -84,7 +84,9 @@ export class DashboardComponent implements OnInit {
 
       // IMPORTANT:
       // Do NOT convert to Date object
-      appointmentTime: this.appointmentTime
+      appointmentTime: new Date(
+  this.appointmentTime + ':00'
+).toISOString()
     };
 
     this.appointmentService

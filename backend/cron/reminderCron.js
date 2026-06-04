@@ -1,7 +1,8 @@
+console.log('Reminder Cron Loaded');
 const cron = require('node-cron');
 const Appointment = require('../models/Appointment');
 const { sendWhatsAppMessage } = require('../services/twilioService');
-
+console.log('Reminder Cron Loaded');
 cron.schedule('* * * * *', async () => {
 
   console.log('Checking reminders...');
