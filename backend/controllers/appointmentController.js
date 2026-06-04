@@ -6,12 +6,12 @@ const createAppointment = async (req, res) => {
   try {
 
     const {
-      customerName,
-      phoneNumber,
-      appointmentTime
-    } = req.body;
+  customerName,
+  phoneNumber,
+  appointmentTime
+} = req.body;
 
-    console.log('Received Time:', appointmentTime);
+console.log('RAW TIME RECEIVED:', appointmentTime);
     console.log('Date Object:', new Date(appointmentTime));
 
     const appointment = await Appointment.create({
