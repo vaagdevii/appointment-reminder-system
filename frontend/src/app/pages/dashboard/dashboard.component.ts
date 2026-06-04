@@ -81,12 +81,7 @@ export class DashboardComponent implements OnInit {
     const appointment = {
       customerName: this.customerName,
       phoneNumber: this.phoneNumber,
-
-      // IMPORTANT:
-      // Do NOT convert to Date object
-      appointmentTime: new Date(
-  this.appointmentTime + ':00'
-).toISOString()
+      appointmentTime: this.appointmentTime
     };
 
     this.appointmentService
@@ -131,6 +126,26 @@ export class DashboardComponent implements OnInit {
         this.loadAppointments();
 
       });
+
+  }
+
+  formatAppointmentTime(
+    dateString: string
+  ): string {
+
+    return new Date(dateString)
+      .toLocaleString(
+        'en-IN',
+        {
+          timeZone: 'Asia/Kolkata',
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        }
+      );
 
   }
 

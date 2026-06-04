@@ -23,15 +23,15 @@ setInterval(async () => {
       const diffMinutes =
         (appointmentTime.getTime() - now.getTime()) /
         (1000 * 60);
-
-      console.log(
-        `${appointment.customerName} => ${diffMinutes.toFixed(2)} minutes`
-      );
+       console.log(
+  `${appointment.customerName} | Diff = ${diffMinutes}`
+);
+      
 
       if (
-        diffMinutes > 0 &&
-        diffMinutes <= 60
-      ) {
+  diffMinutes > 0 &&
+  diffMinutes <= 65
+) {
 
         const formattedDateTime =
           appointmentTime.toLocaleString(
