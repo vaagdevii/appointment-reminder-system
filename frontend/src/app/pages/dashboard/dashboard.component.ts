@@ -41,8 +41,7 @@ export class DashboardComponent implements OnInit {
 
         this.appointments = data;
 
-        this.totalAppointments =
-          data.length;
+        this.totalAppointments = data.length;
 
         const today = new Date();
 
@@ -79,35 +78,38 @@ export class DashboardComponent implements OnInit {
 
   scheduleAppointment(): void {
 
-  const appointment = {
-    customerName: this.customerName,
-    phoneNumber: this.phoneNumber,
-    appointmentTime: new Date(this.appointmentTime)
-  };
+    const appointment = {
+      customerName: this.customerName,
+      phoneNumber: this.phoneNumber,
 
-  this.appointmentService
-    .createAppointment(appointment)
-    .subscribe({
+      // IMPORTANT:
+      // Do NOT convert to Date object
+      appointmentTime: this.appointmentTime
+    };
 
-      next: () => {
+    this.appointmentService
+      .createAppointment(appointment)
+      .subscribe({
 
-        this.customerName = '';
-        this.phoneNumber = '';
-        this.appointmentTime = '';
+        next: () => {
 
-        this.loadAppointments();
+          this.customerName = '';
+          this.phoneNumber = '';
+          this.appointmentTime = '';
 
-      },
+          this.loadAppointments();
 
-      error: (error) => {
+        },
 
-        console.error(error);
+        error: (error) => {
 
-      }
+          console.error(error);
 
-    });
+        }
 
-}
+      });
+
+  }
 
   deleteAppointment(
     id: string

@@ -11,17 +11,19 @@ const createAppointment = async (req, res) => {
       appointmentTime
     } = req.body;
 
-    const appointment =
-      await Appointment.create({
-        customerName,
-        phoneNumber,
-        appointmentTime
-      });
+    console.log('Received Time:', appointmentTime);
+    console.log('Date Object:', new Date(appointmentTime));
+
+    const appointment = await Appointment.create({
+      customerName,
+      phoneNumber,
+      appointmentTime
+    });
 
     try {
 
       const formattedDateTime =
-        new Date(appointmentTime).toLocaleString(
+        new Intl.DateTimeFormat(
           'en-IN',
           {
             timeZone: 'Asia/Kolkata',
@@ -32,7 +34,7 @@ const createAppointment = async (req, res) => {
             minute: '2-digit',
             hour12: true
           }
-        );
+        ).format(new Date(appointment.appointmentTime));
 
       await sendWhatsAppMessage(
         phoneNumber,
@@ -68,8 +70,7 @@ const getAppointments = async (req, res) => {
 
   try {
 
-    const appointments =
-      await Appointment.find()
+    const appointments = await Appointment.find()
       .sort({ appointmentTime: 1 });
 
     res.status(200).json(appointments);
