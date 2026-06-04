@@ -79,15 +79,17 @@ export class DashboardComponent implements OnInit {
 
   scheduleAppointment(): void {
 
-    const appointment = {
-      customerName: this.customerName,
-      phoneNumber: this.phoneNumber,
-      appointmentTime: this.appointmentTime
-    };
+  const appointment = {
+    customerName: this.customerName,
+    phoneNumber: this.phoneNumber,
+    appointmentTime: new Date(this.appointmentTime)
+  };
 
-    this.appointmentService
-      .createAppointment(appointment)
-      .subscribe(() => {
+  this.appointmentService
+    .createAppointment(appointment)
+    .subscribe({
+
+      next: () => {
 
         this.customerName = '';
         this.phoneNumber = '';
@@ -95,9 +97,17 @@ export class DashboardComponent implements OnInit {
 
         this.loadAppointments();
 
-      });
+      },
 
-  }
+      error: (error) => {
+
+        console.error(error);
+
+      }
+
+    });
+
+}
 
   deleteAppointment(
     id: string
