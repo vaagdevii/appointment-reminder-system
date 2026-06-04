@@ -6,13 +6,15 @@ const createAppointment = async (req, res) => {
   try {
 
     const {
-  customerName,
-  phoneNumber,
-  appointmentTime
-} = req.body;
+      customerName,
+      phoneNumber,
+      appointmentTime
+    } = req.body;
 
-console.log('RAW TIME RECEIVED:', appointmentTime);
+    console.log('RAW TIME RECEIVED:', appointmentTime);
     console.log('Date Object:', new Date(appointmentTime));
+    console.log('Customer:', customerName);
+    console.log('Phone:', phoneNumber);
 
     const appointment = await Appointment.create({
       customerName,
@@ -34,7 +36,16 @@ console.log('RAW TIME RECEIVED:', appointmentTime);
             minute: '2-digit',
             hour12: true
           }
-        ).format(new Date(appointment.appointmentTime));
+        ).format(
+          new Date(
+            appointment.appointmentTime
+          )
+        );
+
+      console.log(
+        'Sending WhatsApp to:',
+        phoneNumber
+      );
 
       await sendWhatsAppMessage(
         phoneNumber,
@@ -45,18 +56,29 @@ Your appointment is confirmed for ${formattedDateTime}.
 Thank you.`
       );
 
+      console.log(
+        'WhatsApp message sent successfully'
+      );
+
     } catch (error) {
 
-      console.log(
-        'WhatsApp failed:',
-        error.message
+      console.error(
+        'WhatsApp failed:'
       );
+
+      console.error(error);
 
     }
 
     res.status(201).json(appointment);
 
   } catch (error) {
+
+    console.error(
+      'Appointment Creation Failed:'
+    );
+
+    console.error(error);
 
     res.status(500).json({
       message: error.message
@@ -70,12 +92,19 @@ const getAppointments = async (req, res) => {
 
   try {
 
-    const appointments = await Appointment.find()
-      .sort({ appointmentTime: 1 });
+    const appointments =
+      await Appointment.find()
+      .sort({
+        appointmentTime: 1
+      });
 
-    res.status(200).json(appointments);
+    res.status(200).json(
+      appointments
+    );
 
   } catch (error) {
+
+    console.error(error);
 
     res.status(500).json({
       message: error.message
@@ -99,6 +128,8 @@ const deleteAppointment = async (req, res) => {
     });
 
   } catch (error) {
+
+    console.error(error);
 
     res.status(500).json({
       message: error.message
